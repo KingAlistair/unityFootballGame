@@ -14,6 +14,8 @@ public class UpdateScoreTeam2 : MonoBehaviour
     private Quaternion initialPlayerRotation;
     private bool goalScored = false;
 
+    public AudioSource goalSound;
+
     private void Start()
     {
         initialBallPosition = ballStartPosition.position;
@@ -24,28 +26,50 @@ public class UpdateScoreTeam2 : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Ball") && !goalScored)
+       if (other.gameObject.CompareTag("Ball") && !goalScored)
+{
+    goalScored = true;
+    score += 1;
+    scoreText.text = "Team 2: " + score.ToString();
+    goalSound.Play();
+    Invoke("StopGoalSound", 1f); 
+    Invoke("ResetPositions", 2f);
+}
+    }
+
+    private void StopGoalSound()
         {
-            goalScored = true;
-            score += 1;
-            scoreText.text = "Team 2: " + score.ToString();
-            Invoke("ResetPositions", 2f);
+    goalSound.Stop();
+    }   
+
+    private void ResetPositions()
+{
+    goalScored = false;
+
+    GameObject ball = GameObject.FindGameObjectWithTag("Ball");
+    if (ball != null)
+    {
+        ball.transform.position = initialBallPosition;
+        ball.transform.rotation = initialBallRotation;
+        Rigidbody ballRigidbody = ball.GetComponent<Rigidbody>();
+        if (ballRigidbody != null)
+        {
+            ballRigidbody.velocity = Vector3.zero;
+            ballRigidbody.angularVelocity = Vector3.zero;
         }
     }
 
-    private void ResetPositions()
+    GameObject player = GameObject.FindGameObjectWithTag("Player");
+    if (player != null)
     {
-        goalScored = false;
-        GameObject ball = GameObject.FindGameObjectWithTag("Ball");
-        ball.transform.position = initialBallPosition;
-        ball.transform.rotation = initialBallRotation;
-        ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
-        ball.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
         player.transform.position = initialPlayerPosition;
         player.transform.rotation = initialPlayerRotation;
-        player.GetComponent<Rigidbody>().velocity = Vector3.zero;
-        player.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+        Rigidbody playerRigidbody = player.GetComponent<Rigidbody>();
+        if (playerRigidbody != null)
+        {
+            playerRigidbody.velocity = Vector3.zero;
+            playerRigidbody.angularVelocity = Vector3.zero;
+        }
     }
+}
 }
