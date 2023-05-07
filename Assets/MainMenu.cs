@@ -7,8 +7,14 @@ public class MainMenu : MonoBehaviour
 
     void Start()
     {
-
-        mainMenu.SetActive(false);
+        if (SceneManager.GetActiveScene().name == "MainMenu")
+        {
+            mainMenu.SetActive(true);
+        }
+        else
+        {
+            mainMenu.SetActive(false);
+        }
     }
 
     void Update()
@@ -28,9 +34,8 @@ public class MainMenu : MonoBehaviour
 
     public void ShowMenu()
     {
-
         mainMenu.SetActive(true);
-        Time.timeScale = 0f; 
+        Time.timeScale = 0f;
     }
 
     public void HideMenu()
