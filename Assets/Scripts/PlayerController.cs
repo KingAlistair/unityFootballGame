@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
@@ -7,7 +8,6 @@ public class PlayerController : MonoBehaviour
     private CharacterController characterController;
     public GameObject leftLeg;
     public float kickAngle = 30f;
-    public float kickForce = 2.5f;
     public float kickDistance = 3f;
 
     private Vector3 startingPosition;
@@ -43,23 +43,48 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void Kick()
+   void Kick()
     {
+        float strength = 0.5f;
+        float maxStrength = 3f;
+        float kickDuration = 0.5f;
+        float kickTime = 0f;
+        bool isKicking = true;
+
         leftLeg.transform.localRotation = Quaternion.Euler(-kickAngle, 0f, 0f);
 
-        Collider[] colliders = Physics.OverlapSphere(leftLeg.transform.position, kickDistance);
-        foreach (Collider collider in colliders)
+        StartCoroutine(ChargeKick());
+
+        IEnumerator ChargeKick()
         {
-            if (collider.CompareTag("Ball"))
+            while (isKicking)
             {
-                Rigidbody rb = collider.GetComponent<Rigidbody>();
-                if (rb != null)
+                kickTime += Time.deltaTime;
+                strength = Mathf.Lerp(1f, maxStrength, kickTime / kickDuration);
+
+                if (!Input.GetKey(KeyCode.Space) || kickTime >= kickDuration)
                 {
-                    rb.AddForce(leftLeg.transform.forward * kickForce, ForceMode.Impulse);
+                    isKicking = false;
+
+                    Collider[] colliders = Physics.OverlapSphere(leftLeg.transform.position, kickDistance);
+                    foreach (Collider collider in colliders)
+                    {
+                        if (collider.CompareTag("Ball"))
+                        {
+                            Rigidbody rb = collider.GetComponent<Rigidbody>();
+                            if (rb != null)
+                            {
+                                rb.AddForce(leftLeg.transform.forward * strength, ForceMode.Impulse);
+                            }
+                        }
+                    }
+
+                    Invoke("ResetLegRotation", 0.5f);
                 }
+
+                yield return null;
             }
         }
-        Invoke("ResetLegRotation", 0.5f);
     }
 
     void ResetLegRotation()

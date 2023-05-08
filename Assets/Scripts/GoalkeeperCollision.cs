@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class GoalkeeperCollision : MonoBehaviour
 {
-    public float deflectForce = 0.2f;
+    public float deflectForce = 5f;
 
     void OnCollisionEnter(Collision collision)
     {
@@ -11,10 +11,7 @@ public class GoalkeeperCollision : MonoBehaviour
             Rigidbody ballRigidbody = collision.gameObject.GetComponent<Rigidbody>();
             if (ballRigidbody != null)
             {
-                // Calculate the opposite direction to the ball's current velocity
                 Vector3 oppositeDirection = -collision.contacts[0].normal;
-
-                // Apply a force to the ball in the opposite direction to its current velocity
                 ballRigidbody.AddForce(oppositeDirection * deflectForce, ForceMode.Impulse);
             }
         }
