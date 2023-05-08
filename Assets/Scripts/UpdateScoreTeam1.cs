@@ -32,8 +32,8 @@ public class UpdateScoreTeam1 : MonoBehaviour
     score += 1;
     scoreText.text = "Team 1: " + score.ToString();
     goalSound.Play();
-    Invoke("StopGoalSound", 1f); 
-    Invoke("ResetPositions", 2f);
+    Invoke("StopGoalSound", 2f); 
+    Invoke("ResetPositions", 3f);
 }
     }
 
