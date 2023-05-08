@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class AutoMove : MonoBehaviour
 {
-    public float speed = 5f;
-    public float distance = 5f;
+    public float speed = 4f;
+    public float distance = 8f;
 
     private float startPosX;
 
