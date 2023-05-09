@@ -1,5 +1,5 @@
 # UnityFootballGame - C# Mandatory II
-C# mandatory I. by Fernanda Cunha Bacelar and Daniel Szabo.
+C# mandatory II. by Fernanda Cunha Bacelar and Daniel Szabo.
 ![235305636-ad2a034a-27ab-4a9f-b58c-39a0fc788cc5](https://user-images.githubusercontent.com/60754393/236006994-22cc635b-203b-419a-8127-aa5af86cf9c3.jpg)
 
 ## The assignment
